@@ -23,17 +23,22 @@ export const getTasks = async (
 ) => {
   const offset = (page - 1) * limit;
 
-  // Fetch paginated tasks
+  // Validate column and order
+  const validSortColumns = ["end_date", "priority", "title", "id"];
+  const validOrders = ["ASC", "DESC"];
+
+  const column = validSortColumns.includes(sortBy) ? sortBy : "end_date";
+  const sortOrder = validOrders.includes(order.toUpperCase()) ? order.toUpperCase() : "ASC";
+
   const [tasks] = await db.query(
     `SELECT *, (end_date < CURDATE()) AS overdue
      FROM tasks 
      WHERE user_id = ?
-     ORDER BY ${sortBy} ${order}
+     ORDER BY ${column} ${sortOrder}
      LIMIT ? OFFSET ?`,
     [userId, limit, offset]
   );
 
-  // Get total count of tasks
   const [countRows] = await db.query(
     "SELECT COUNT(*) as total FROM tasks WHERE user_id = ?",
     [userId]
@@ -52,16 +57,15 @@ export const getTasks = async (
   };
 };
 
-// Fetch a single task by ID
-export const getTaskById = async (id, userId) => {
-  const [rows] = await db.query(
-    `SELECT *, (end_date < CURDATE()) AS overdue
-     FROM tasks
-     WHERE id = ? AND user_id = ?`,
-    [id, userId]
+// Get single task by ID
+export const getTaskById = async (userId, taskId) => {
+  const [tasks] = await db.query(
+    "SELECT * FROM tasks WHERE user_id = ? AND id = ?",
+    [userId, taskId]
   );
 
-  return rows[0]; // returns single task or undefined
+  if (!tasks.length) return null;
+  return tasks[0];
 };
 
 // Update a task dynamically
