@@ -35,7 +35,6 @@ const Task = () => {
         const response = await dispatch(deleteTask(taskId)).unwrap();
         toast.success(response.message || "Task deleted successfully!");
       } catch (err) {
-        console.error("Failed to delete task:", err);
         toast.error(err.message || err || "Failed to delete task!");
       }
     }

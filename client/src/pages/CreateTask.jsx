@@ -29,7 +29,6 @@ const CreateTask = () => {
       toast.success(response.message || "Task created successfully!");
       navigate("/"); // go back to dashboard
     } catch (err) {
-      console.error("Failed to create task:", err);
       toast.error(err.message || err || "Failed to create task!");
     }
   };

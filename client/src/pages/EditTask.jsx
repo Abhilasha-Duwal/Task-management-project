@@ -51,7 +51,6 @@ const EditTask = () => {
       toast.success(response.message || "Task updated successfully!");
       navigate("/"); // go back to dashboard
     } catch (err) {
-      console.error("Failed to update task:", err);
       toast.error(err.message || err || "Failed to update task!");
     }
   };

@@ -24,12 +24,10 @@ const Login = () => {
       // Dispatch login success to Redux
       dispatch(loginSuccess(res.data.token));
       toast.success(res.data.message || "Login successful!");
-      console.log("Token stored in Redux:", res.data.token);
 
       // Redirect to Task page
       navigate("/", { replace: true });
     } catch (err) {
-      console.error("Login failed:", err.response?.data || err.message);
       toast.error(err.response?.data?.message || err.message || "Login failed!");
     }
   };

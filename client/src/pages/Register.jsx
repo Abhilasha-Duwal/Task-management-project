@@ -24,19 +24,13 @@ const Register = () => {
     e.preventDefault();
     try {
       const res = await api.post("/register", formData);
-
       // Store token in Redux after successful registration
       dispatch(loginSuccess(res.data.token));
-
-      console.log("Token stored in Redux:", res.data.token);
       toast.success(res.data.message || "Registration successful!");
-
       // Redirect to dashboard
       navigate("/", { replace: true });
     } catch (err) {
-      console.error("Registration failed:", err.response?.data || err.message);
-       const msg = err.response?.data?.message || err.message || "Register failed!";
-      toast.error(msg);
+      toast.error(err.response?.data?.message || err.message || "Register failed!");
     }
   };
 
