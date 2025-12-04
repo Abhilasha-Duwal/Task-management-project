@@ -6,13 +6,16 @@ services:
     networks:
       - my-network
     ports:
-      - "5000:5000"
+      - "${PORT}:${PORT}"
+    env_file:
+      - .env
     environment:
-      - PORT=5000
-      - DB_HOST=mysql
-      - DB_USER=root
-      - DB_PASSWORD=root
-      - DB_NAME=mydb
+      PORT: ${PORT}
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      JWT_SECRET: ${JWT_SECRET}
     depends_on:
       - mysql
     volumes:
@@ -25,9 +28,11 @@ services:
     networks:
       - my-network
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mydb
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
     ports:
       - "3306:3306"
     volumes:
@@ -42,9 +47,11 @@ services:
     restart: always
     ports:
       - "8080:80"
+    env_file:
+      - .env
     environment:
       PMA_HOST: mysql
-      PMA_PORT: 3306
+      PMA_PORT: ${PMA_PORT}
     depends_on:
       - mysql
 
