@@ -1,0 +1,22 @@
+# Node Server
+node_modules
+.git
+.gitignore
+
+# Logs
+*.log
+logs
+
+# Environment files
+.env
+.env.*
+
+# Build output
+dist
+build
+.cache
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.*

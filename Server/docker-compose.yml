@@ -1,0 +1,56 @@
+version: '3.9'
+services:
+  node-app:
+    build: .
+    container_name: node-server-app
+    networks:
+      - my-network
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=mydb
+    depends_on:
+      - mysql
+    volumes:
+      - .:/usr/src/app
+    restart: always
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    networks:
+      - my-network
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    networks:
+      - my-network
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-data:
+
+networks:
+  my-network:
+    driver: bridge
