@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -11,22 +11,49 @@ const Task = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { tasks, pagination, loading } = useSelector((state) => state.tasks);
+
+  // Sorting
+  const [sortColumn, setSortColumn] = useState("end_date");
+  const [sortOrder, setSortOrder] = useState("asc");
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Fetch tasks whenever page changes
+  useEffect(() => {
+    dispatch(
+      fetchTasks({
+        page: currentPage,
+        sortBy: sortColumn,
+        order: sortOrder,
+      })
+    );
+  }, [dispatch, currentPage]);
+
+  // Handle sorting button click
+  const handleSortChange = (column) => {
+    let nextOrder = "asc";
+    if (sortColumn === column) {
+      nextOrder = sortOrder === "asc" ? "desc" : "asc"; // toggle
+    }
+    setSortColumn(column);
+    setSortOrder(nextOrder);
+    setCurrentPage(1); // reset to page 1
+    dispatch(fetchTasks({ page: 1, sortBy: column, order: nextOrder }));
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= pagination.totalPages) {
+      setCurrentPage(newPage);
+      dispatch(fetchTasks({ page: newPage, sortBy: sortColumn, order: sortOrder }));
+    }
+  };
+
   const handleLogout = () => {
     dispatch(logout());
     toast.success("Logged out successfully!");
     navigate("/login", { replace: true });
-  };
-
-  const { tasks, pagination, loading } = useSelector((state) => state.tasks);
-
-  useEffect(() => {
-    dispatch(fetchTasks());
-  }, [dispatch]);
-
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= pagination.totalPages) {
-      dispatch(fetchTasks(newPage));
-    }
   };
 
   const handleDelete = async (taskId) => {
@@ -34,6 +61,8 @@ const Task = () => {
       try {
         const response = await dispatch(deleteTask(taskId)).unwrap();
         toast.success(response.message || "Task deleted successfully!");
+        // Refresh tasks
+        dispatch(fetchTasks({ page: currentPage, sortBy: sortColumn, order: sortOrder }));
       } catch (err) {
         toast.error(err.message || err || "Failed to delete task!");
       }
@@ -43,19 +72,41 @@ const Task = () => {
   return (
     <AuthGuard>
       <div className="container dashboard-container">
-        <div className="d-flex justify-content-end">
+        <div className="d-flex justify-content-end mb-3">
           <button className="btn btn-danger" onClick={handleLogout}>
             Logout
           </button>
         </div>
+
         <h2 className="mb-5 text-center">Dashboard</h2>
-        <div className="mb-3">
+
+        <div className="mb-3 d-flex justify-content-between align-items-center">
           <button
             className="btn btn-success"
             onClick={() => navigate("/tasks/create")}
           >
             + Create New Task
           </button>
+
+          <div className="d-flex align-items-center">
+            <span className="me-2">Sort by:</span>
+            <button
+              className={`btn btn-outline-primary me-2 ${
+                sortColumn === "end_date" ? "active" : ""
+              }`}
+              onClick={() => handleSortChange("end_date")}
+            >
+              Due Date {sortColumn === "end_date" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+            </button>
+            <button
+              className={`btn btn-outline-primary ${
+                sortColumn === "priority" ? "active" : ""
+              }`}
+              onClick={() => handleSortChange("priority")}
+            >
+              Priority {sortColumn === "priority" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+            </button>
+          </div>
         </div>
 
         {loading ? (
@@ -79,24 +130,20 @@ const Task = () => {
                 <tbody>
                   {tasks.map((task, index) => (
                     <tr key={task.id}>
-                      <td>
-                        {index +
-                          1 +
-                          (pagination.currentPage - 1) * pagination.pageSize}
-                      </td>
+                      <td>{index + 1 + (currentPage - 1) * pagination.pageSize}</td>
                       <td>{task.title}</td>
                       <td>{task.description}</td>
                       <td>{task.priority}</td>
                       <td>{new Date(task.end_date).toLocaleDateString()}</td>
-                      <td>
+                      <td className="d-flex justify-content-center gap-3">
                         <button
-                          className="btn btn-sm btn-warning me-2"
+                          className="btn btn-sm btn-warning w-50"
                           onClick={() => navigate(`/tasks/edit/${task.id}`)}
                         >
                           Edit
                         </button>
                         <button
-                          className="btn btn-sm btn-danger"
+                          className="btn btn-sm btn-danger w-50"
                           onClick={() => handleDelete(task.id)}
                         >
                           Delete
@@ -108,21 +155,21 @@ const Task = () => {
               </table>
             </div>
 
-            <div className="d-flex justify-content-center mt-3">
+            <div className="d-flex justify-content-center mt-3 align-items-center">
               <button
                 className="btn btn-primary me-2"
-                disabled={pagination.currentPage === 1}
-                onClick={() => handlePageChange(pagination.currentPage - 1)}
+                disabled={currentPage === 1}
+                onClick={() => handlePageChange(currentPage - 1)}
               >
                 Previous
               </button>
-              <span className="align-self-center">
-                Page {pagination.currentPage} of {pagination.totalPages}
+              <span className="mx-2">
+                Page {currentPage} of {pagination.totalPages}
               </span>
               <button
                 className="btn btn-primary ms-2"
-                disabled={pagination.currentPage === pagination.totalPages}
-                onClick={() => handlePageChange(pagination.currentPage + 1)}
+                disabled={currentPage === pagination.totalPages}
+                onClick={() => handlePageChange(currentPage + 1)}
               >
                 Next
               </button>

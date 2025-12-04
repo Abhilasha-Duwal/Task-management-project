@@ -4,9 +4,16 @@ import api from "../../config/axiosConfig";
 // Fetch tasks from API
 export const fetchTasks = createAsyncThunk(
   "tasks/fetchTasks",
-  async (page = 1, { rejectWithValue }) => {
+  async (
+    { page = 1, sortBy = "end_date", order = "asc" } = {},
+    { rejectWithValue }
+  ) => {
     try {
-      const res = await api.get(`/tasks?page=${page}&pageSize=5`);
+      const token = localStorage.getItem("token");
+      const res = await api.get(
+        `/tasks?page=${page}&sortBy=${sortBy}&order=${order}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       return res.data;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
