@@ -2,7 +2,7 @@ import axios from "axios";
 
 // If you're using cookies (httpOnly or JS cookies), we enable sending cookies
 const api = axios.create({
-  baseURL: "http://localhost:5000/api", // base url of api endpoints
+  baseURL: process.env.REACT_APP_API_URL, // base url of api endpoints
   withCredentials: true, // allows cookies to be sent automatically
 });
 
