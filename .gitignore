@@ -10,7 +10,6 @@ yarn-error.log*
 # Environment Variables
 ##############################
 .env
-.env.*
 
 ##############################
 # Logs & Debug Files
