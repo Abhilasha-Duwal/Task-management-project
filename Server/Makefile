@@ -10,15 +10,15 @@ COMPOSE_PROD=docker-compose.prod.yml
 # ----------------------------------------
 # Development
 # ----------------------------------------
-dev-start:
+dev-build:
 	@echo "Starting development environment..."
 	docker-compose -f $(COMPOSE_BASE) -f $(COMPOSE_DEV) up --build
 
-dev-detach:
+dev-build-detach:
 	@echo "Starting development environment in detached mode..."
 	docker-compose -f $(COMPOSE_BASE) -f $(COMPOSE_DEV) up --build -d
 
-dev-up:
+dev-start:
 	@echo "Starting development environment without build..."
 	docker-compose -f $(COMPOSE_BASE) -f $(COMPOSE_DEV) up	
 
@@ -29,7 +29,7 @@ dev-stop:
 # ----------------------------------------
 # Production
 # ----------------------------------------
-prod:
+prod-build:
 	@echo "Starting production environment..."
 	docker-compose -f $(COMPOSE_BASE) -f $(COMPOSE_PROD) up --build -d
 
