@@ -19,7 +19,9 @@ export const register = async (req, res) => {
     res.json({ message: "User registered" });
   } catch (err) {
     console.error("Register error:", err);
-    res.status(500).json({ message: "Internal Server Error", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: err.message });
   }
 };
 
@@ -29,7 +31,9 @@ export const login = async (req, res) => {
 
     // Validate input
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
     }
 
     // Find user
@@ -51,18 +55,20 @@ export const login = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    // Set cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // only secure in production
-      sameSite: "strict"
-    });
-
     // Send response
-    res.json({ message: "Login successful", token });
-
+    res.json({
+      message: "you are login successfully",
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
+    });
   } catch (err) {
     console.error("Login error:", err);
-    res.status(500).json({ message: "Internal Server Error", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: err.message });
   }
 };
