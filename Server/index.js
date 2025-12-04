@@ -10,7 +10,10 @@ import taskRoutes from "./src/routes/taskRoutes.js";
 const app = express();
 
 // Middleware
-app.use(cors()); // enable CORS for all origins
+app.use(cors({
+  origin: process.env.REACT_URL,
+  credentials: true // If you are sending cookies (like your token)
+}));
 app.use(express.json());
 app.use(cookieParser());
 
