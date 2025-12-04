@@ -1,0 +1,25 @@
+.dashboard-container {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.dashboard-container h2 {
+  color: #2575fc;
+}
+
+.table-responsive {
+  max-height: 70vh;
+  overflow-y: auto;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(37, 117, 252, 0.1);
+}
