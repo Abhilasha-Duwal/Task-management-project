@@ -1,7 +1,6 @@
-# Task Management API
+# Task Management Project
 
-A simple RESTful API for managing tasks, built with **Node.js**, **Express**, and **MySQL**.  
-Supports user authentication, CRUD operations for tasks, and pagination with sorting.
+A simple Task Management Project, built with **Node.js**, **Express**, and **MySQL** on Server side and **React.js** on Client side. 
 
 ---
 
