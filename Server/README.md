@@ -30,5 +30,47 @@ Supports user authentication, CRUD operations for tasks, and pagination with sor
 1. Clone the repository:
 
 ```bash
-git clone <your-repo-url>
-cd <your-project-folder>
+git clone https://github.com/Abhilasha-Duwal/Task-management-project.git
+cd Server
+```
+2. Install Dependencies
+```bash
+npm install
+```
+### Setting up Environment Variables
+3. Create Environment Variables
+```bash
+##make copy of .env.example file to .env
+cp .env.example .env
+```
+
+### Run build and start server and stop server on Development mode with docker
+4. To build server
+```
+make dev-build
+make dev-build-detach // to build on detached mode
+```
+5. To start without build after successfull build of docker container
+```
+make dev-start
+```
+6. To stop server
+```
+make dev-stop
+```
+
+### Run build and start server and stop server on Production with docker
+
+7. To build server
+```
+make prod-build
+```
+9. To stop server
+```
+make prod-stop
+```
+
+
+
+
+
