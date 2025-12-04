@@ -16,6 +16,11 @@ In the project directory, you can run:
 ```
 npm install
 ```
+### Create environment Variable
+```
+##make copy of .env.example file to .env
+cp .env.example .env
+```
 
 ### `npm start`
 
