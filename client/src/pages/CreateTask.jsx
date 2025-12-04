@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createTask } from "../store/slices/taskSlice";
@@ -24,11 +25,12 @@ const CreateTask = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(createTask(formData)).unwrap();
+      const response = await dispatch(createTask(formData)).unwrap();
+      toast.success(response.message || "Task created successfully!");
       navigate("/"); // go back to dashboard
     } catch (err) {
       console.error("Failed to create task:", err);
-      alert("Failed to create task!");
+      toast.error(err.message || err || "Failed to create task!");
     }
   };
 

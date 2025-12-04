@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../store/slices/authSlice";
@@ -12,6 +13,7 @@ const Task = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    toast.success("Logged out successfully!");
     navigate("/login", { replace: true });
   };
 
@@ -28,14 +30,16 @@ const Task = () => {
   };
 
   const handleDelete = async (taskId) => {
-  if (window.confirm("Are you sure you want to delete this task?")) {
-    try {
-      await dispatch(deleteTask(taskId)).unwrap();
-    } catch (err) {
-      console.error("Failed to delete task:", err);
+    if (window.confirm("Are you sure you want to delete this task?")) {
+      try {
+        const response = await dispatch(deleteTask(taskId)).unwrap();
+        toast.success(response.message || "Task deleted successfully!");
+      } catch (err) {
+        console.error("Failed to delete task:", err);
+        toast.error(err.message || err || "Failed to delete task!");
+      }
     }
-  }
-};
+  };
 
   return (
     <AuthGuard>

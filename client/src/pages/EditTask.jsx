@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { updateTask } from "../store/slices/taskSlice";
@@ -44,10 +45,14 @@ const EditTask = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(updateTask({ id, updatedData: formData })).unwrap();
+      const response = await dispatch(
+        updateTask({ id, updatedData: formData })
+      ).unwrap();
+      toast.success(response.message || "Task updated successfully!");
       navigate("/"); // go back to dashboard
     } catch (err) {
       console.error("Failed to update task:", err);
+      toast.error(err.message || err || "Failed to update task!");
     }
   };
 
