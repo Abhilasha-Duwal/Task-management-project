@@ -18,11 +18,11 @@ A simple Task Management Project, built with **Node.js**, **Express**, and **MyS
 ## Getting Started
 
 ### Prerequisites
-
 - Node.js >= 18
 - MySQL database
 - npm or yarn
 - Docker & Docker Compose (optional for containerized setup)
+- React app
 
 ### Installation
 
