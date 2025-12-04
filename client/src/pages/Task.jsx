@@ -42,7 +42,7 @@ const Task = () => {
 
   return (
     <AuthGuard>
-      <div className="container dashboard-container mt-5">
+      <div className="container dashboard-container">
         <div className="d-flex justify-content-end">
           <button className="btn btn-danger" onClick={handleLogout}>
             Logout
