@@ -1,0 +1,57 @@
+/* Full-page gradient background for auth pages */
+.auth-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #858288, #5e6a80);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Card container */
+.auth-card {
+  background-color: white;
+  border-radius: 1rem;
+  max-width: 450px;
+  width: 100%;
+  padding: 30px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Card title */
+.auth-card h3 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Input focus effect */
+.form-control:focus {
+  border-color: #2575fc;
+  box-shadow: 0 0 0 0.2rem rgba(37, 117, 252, 0.25);
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #2575fc;
+  border-color: #2575fc;
+}
+
+.btn-primary:hover {
+  background-color: #1f5ed3;
+  border-color: #1f5ed3;
+}
+
+/* Links below form */
+.auth-card p {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.auth-card p a {
+  color: #2575fc;
+  text-decoration: none;
+}
+
+.auth-card p a:hover {
+  text-decoration: underline;
+}
