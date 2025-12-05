@@ -13,6 +13,9 @@ async function connectWithRetry() {
         password: process.env.DB_PASSWORD || "root",
         database: process.env.DB_NAME || "mydb",
         port: process.env.DB_PORT || 3306,
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
       });
 
       console.log("Connected to MySQL!");
