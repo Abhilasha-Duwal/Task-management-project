@@ -29,7 +29,7 @@ const Task = () => {
         order: sortOrder,
       })
     );
-  }, [dispatch, currentPage]);
+  }, [dispatch, currentPage, sortColumn, sortOrder]);
 
   // Handle sorting button click
   const handleSortChange = (column) => {
@@ -119,7 +119,7 @@ const Task = () => {
               <table className="table table-striped table-bordered">
                 <thead className="table-dark">
                   <tr>
-                    <th>S.N</th>
+                    <th  style={{ width: "50px" }}>S.N</th>
                     <th>Title</th>
                     <th>Description</th>
                     <th>Priority</th>
@@ -132,7 +132,7 @@ const Task = () => {
                     <tr key={task.id}>
                       <td>{index + 1 + (currentPage - 1) * pagination.pageSize}</td>
                       <td>{task.title}</td>
-                      <td>{task.description}</td>
+                      <td style={{ maxWidth: "200px", wordWrap: "break-word" }}>{task.description}</td>
                       <td>{task.priority}</td>
                       <td>{new Date(task.end_date).toLocaleDateString()}</td>
                       <td className="d-flex justify-content-center gap-3">
@@ -161,7 +161,7 @@ const Task = () => {
                 disabled={currentPage === 1}
                 onClick={() => handlePageChange(currentPage - 1)}
               >
-                Previous
+                Prev
               </button>
               <span className="mx-2">
                 Page {currentPage} of {pagination.totalPages}
