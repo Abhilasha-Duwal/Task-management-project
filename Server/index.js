@@ -23,5 +23,6 @@ app.use("/api/tasks", taskRoutes);
 
 // Start server
 app.listen(process.env.PORT, () => {
-  console.log(`Server running at http://localhost:${process.env.PORT}`);
+  // console.log(`Server running at http://localhost:${process.env.PORT}`);
+  console.log(`Server running on port ${PORT}`)
 });
