@@ -1,6 +1,7 @@
 import {
   createTask,
   getTasks,
+  getTaskById,
   updateTask,
   deleteTask,
 } from "../models/Task.js";
@@ -36,10 +37,10 @@ export const fetchTasks = async (req, res) => {
 };
 
 // Get a single task by ID
-export const getTaskById = async (req, res) => {
+export const fetchTaskById = async (req, res) => {
   try {
     const taskId = Number(req.params.id);
-    const task = await getTaskByIdModel(req.user.id, taskId);
+    const task = await getTaskById(req.user.id, taskId);
 
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
