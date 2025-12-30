@@ -14,11 +14,13 @@ export const register = async (req, res) => {
     if (user) return res.status(400).json({ message: "Email already exists" });
 
     const hashed = await bcrypt.hash(password, 10);
-    await createUser(name, email, hashed);
+    const result = await createUser(name, email, hashed);
+
+    console.log("create user result",result);
 
     // Generate token for newly registered user
     const token = jwt.sign(
-      { id: newUser.id, email: newUser.email },
+      { id: result.insertId, email: email },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
@@ -27,9 +29,9 @@ export const register = async (req, res) => {
       message: "You are registered successfully!",
       token,
       user: {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
+        id: result.insertId,
+        name,
+        email,
       },
     });
   } catch (err) {
