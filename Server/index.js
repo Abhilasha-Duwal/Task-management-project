@@ -9,13 +9,18 @@ import taskRoutes from "./src/routes/taskRoutes.js";
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: process.env.REACT_URL,
-  credentials: true // If you are sending cookies (like your token)
-}));
+app.use(
+  cors({
+    origin: process.env.REACT_URL,
+    credentials: true, // If you are sending cookies (like your token)
+  })
+);
 app.use(express.json());
 
 // Routes
+app.get("/", (req, res) => {
+  res.status(200).send("API is running 🚀");
+});
 app.use("/api", authRoutes);
 app.use("/api/tasks", taskRoutes);
 
