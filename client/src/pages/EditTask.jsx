@@ -14,8 +14,6 @@ const EditTask = () => {
   const navigate = useNavigate();
 
   const tasks = useSelector((state) => state.tasks.tasks);
-  const auth = useSelector((state) => state.auth);
-  const userId = auth.userId;
 
   const taskToEdit = tasks.find((t) => t.id === parseInt(id));
 
@@ -24,7 +22,7 @@ const EditTask = () => {
     description: "",
     priority: "medium",
     end_date: "",
-    user_id: userId || "",
+    user_id: "",
   });
 
   useEffect(() => {
