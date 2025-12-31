@@ -5,6 +5,7 @@ const token = localStorage.getItem("token");
 const initialState = {
   token: token || null,
   isLoggedIn: !!token,
+  userName: localStorage.getItem("userName") || null,
 };
 
 const authSlice = createSlice({
@@ -15,6 +16,7 @@ const authSlice = createSlice({
       state.token = action.payload;
       state.isLoggedIn = true;
       localStorage.setItem("token", action.payload);
+      localStorage.setItem("userName", action.payload.userName);
     },
     logout: (state) => {
       state.token = null;

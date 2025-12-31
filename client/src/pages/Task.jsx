@@ -12,6 +12,8 @@ const Task = () => {
   const navigate = useNavigate();
 
   const { tasks, pagination, loading } = useSelector((state) => state.tasks);
+  const auth = useSelector((state) => state.auth);
+  const userName = auth.userName || "User";
 
   // Sorting
   const [sortColumn, setSortColumn] = useState("end_date");
@@ -46,7 +48,9 @@ const Task = () => {
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= pagination.totalPages) {
       setCurrentPage(newPage);
-      dispatch(fetchTasks({ page: newPage, sortBy: sortColumn, order: sortOrder }));
+      dispatch(
+        fetchTasks({ page: newPage, sortBy: sortColumn, order: sortOrder })
+      );
     }
   };
 
@@ -62,7 +66,13 @@ const Task = () => {
         const response = await dispatch(deleteTask(taskId)).unwrap();
         toast.success(response.message || "Task deleted successfully!");
         // Refresh tasks
-        dispatch(fetchTasks({ page: currentPage, sortBy: sortColumn, order: sortOrder }));
+        dispatch(
+          fetchTasks({
+            page: currentPage,
+            sortBy: sortColumn,
+            order: sortOrder,
+          })
+        );
       } catch (err) {
         toast.error(err.message || err || "Failed to delete task!");
       }
@@ -73,6 +83,9 @@ const Task = () => {
     <AuthGuard>
       <div className="container dashboard-container">
         <div className="d-flex justify-content-end mb-3">
+          <span>
+            Hello, <strong>{userName}</strong>
+          </span>
           <button className="btn btn-danger" onClick={handleLogout}>
             Logout
           </button>
@@ -96,7 +109,11 @@ const Task = () => {
               }`}
               onClick={() => handleSortChange("end_date")}
             >
-              Due Date {sortColumn === "end_date" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+              Due Date{sortColumn === "end_date"
+                ? sortOrder === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
             </button>
             <button
               className={`btn btn-outline-primary ${
@@ -104,7 +121,11 @@ const Task = () => {
               }`}
               onClick={() => handleSortChange("priority")}
             >
-              Priority {sortColumn === "priority" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+              Priority{sortColumn === "priority"
+                ? sortOrder === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
             </button>
           </div>
         </div>
@@ -119,7 +140,7 @@ const Task = () => {
               <table className="table table-striped table-bordered">
                 <thead className="table-dark">
                   <tr>
-                    <th  style={{ width: "50px" }}>S.N</th>
+                    <th style={{ width: "50px" }}>S.N</th>
                     <th>Title</th>
                     <th>Description</th>
                     <th>Priority</th>
@@ -130,9 +151,13 @@ const Task = () => {
                 <tbody>
                   {tasks.map((task, index) => (
                     <tr key={task.id}>
-                      <td>{index + 1 + (currentPage - 1) * pagination.pageSize}</td>
+                      <td>
+                        {index + 1 + (currentPage - 1) * pagination.pageSize}
+                      </td>
                       <td>{task.title}</td>
-                      <td style={{ maxWidth: "200px", wordWrap: "break-word" }}>{task.description}</td>
+                      <td style={{ maxWidth: "200px", wordWrap: "break-word" }}>
+                        {task.description}
+                      </td>
                       <td>{task.priority}</td>
                       <td>{new Date(task.end_date).toLocaleDateString()}</td>
                       <td className="d-flex justify-content-center gap-3">
