@@ -1,12 +1,12 @@
 import axios from "axios";
 
-// If you're using cookies (httpOnly or JS cookies), we enable sending cookies
+// Create a custom Axios instance with default settings
 const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL, // base url of api endpoints
   withCredentials: true, // allows cookies to be sent automatically
 });
 
-// Request Interceptor – add token from cookies (if needed)
+// Request interceptor to attach token to every request
 api.interceptors.request.use(
   (config) => {
    const token = localStorage.getItem("token");
