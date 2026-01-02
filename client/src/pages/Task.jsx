@@ -151,7 +151,7 @@ const Task = () => {
                 <tbody>
                   {tasks.map((task, index) => (
                     
-                    <tr key={task.id} className={index%2===0? "color-row" : " "}>
+                    <tr key={task.id}>
                       <td>
                         {index + 1 + (currentPage - 1) * pagination.pageSize}
                       </td>

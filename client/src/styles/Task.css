@@ -27,6 +27,6 @@
   white-space: nowrap;
 }
 
-.color-row{
+.table tbody tr:nth-child(odd){
   background-color: aqua;
 }
