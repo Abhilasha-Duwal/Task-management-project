@@ -82,10 +82,8 @@ const Task = () => {
   return (
     <AuthGuard>
       <div className="container dashboard-container">
-        <div className="d-flex justify-content-end mb-3">
-          <span>
-            Hello, <strong>{userName}</strong>
-          </span>
+        <div className="d-flex justify-content-end mb-3 gap-2">
+          <span className="fw-bold fs-3 text-info">{userName}</span>
           <button className="btn btn-danger" onClick={handleLogout}>
             Logout
           </button>
@@ -109,7 +107,8 @@ const Task = () => {
               }`}
               onClick={() => handleSortChange("end_date")}
             >
-              Due Date{sortColumn === "end_date"
+              Due Date
+              {sortColumn === "end_date"
                 ? sortOrder === "asc"
                   ? "↑"
                   : "↓"
@@ -121,7 +120,8 @@ const Task = () => {
               }`}
               onClick={() => handleSortChange("priority")}
             >
-              Priority{sortColumn === "priority"
+              Priority
+              {sortColumn === "priority"
                 ? sortOrder === "asc"
                   ? "↑"
                   : "↓"
@@ -137,7 +137,7 @@ const Task = () => {
         ) : (
           <>
             <div className="table-responsive">
-              <table className="table table-striped table-bordered">
+              <table className="table table-bordered">
                 <thead className="table-dark">
                   <tr>
                     <th style={{ width: "50px" }}>S.N</th>
@@ -150,7 +150,8 @@ const Task = () => {
                 </thead>
                 <tbody>
                   {tasks.map((task, index) => (
-                    <tr key={task.id}>
+                    
+                    <tr key={task.id} className={index%2===0? "color-row" : " "}>
                       <td>
                         {index + 1 + (currentPage - 1) * pagination.pageSize}
                       </td>
