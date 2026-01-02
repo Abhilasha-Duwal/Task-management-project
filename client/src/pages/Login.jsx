@@ -22,13 +22,20 @@ const Login = () => {
       const res = await api.post("/login", formData);
 
       // Dispatch login success to Redux
-      dispatch(loginSuccess(res.data.token));
+      dispatch(
+        loginSuccess({
+          token: res.data.token,
+          userName: res.data.user.name,
+        })
+      );
       toast.success(res.data.message || "Login successful!");
 
       // Redirect to Task page
       navigate("/", { replace: true });
     } catch (err) {
-      toast.error(err.response?.data?.message || err.message || "Login failed!");
+      toast.error(
+        err.response?.data?.message || err.message || "Login failed!"
+      );
     }
   };
 

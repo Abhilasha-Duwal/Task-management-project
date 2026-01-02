@@ -13,15 +13,18 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state, action) => {
-      state.token = action.payload;
+      const { token, userName } = action.payload;
+      state.token = token;
       state.isLoggedIn = true;
-      localStorage.setItem("token", action.payload);
-      localStorage.setItem("userName", action.payload.userName);
+      state.userName = userName; // Update Redux state
+      localStorage.setItem("token", token);
+      localStorage.setItem("userName", userName); // Save in localStorage
     },
     logout: (state) => {
       state.token = null;
       state.isLoggedIn = false;
       localStorage.removeItem("token");
+      localStorage.removeItem("userName");
     },
   },
 });

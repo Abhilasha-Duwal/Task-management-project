@@ -25,12 +25,19 @@ const Register = () => {
     try {
       const res = await api.post("/register", formData);
       // Store token in Redux after successful registration
-      dispatch(loginSuccess(res.data.token));
+      dispatch(
+        loginSuccess({
+          token: res.data.token,
+          userName: res.data.user.name,
+        })
+      );
       toast.success(res.data.message || "Registration successful!");
       // Redirect to dashboard
       navigate("/", { replace: true });
     } catch (err) {
-      toast.error(err.response?.data?.message || err.message || "Register failed!");
+      toast.error(
+        err.response?.data?.message || err.message || "Register failed!"
+      );
     }
   };
 
